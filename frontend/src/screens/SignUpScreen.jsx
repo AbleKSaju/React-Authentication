@@ -24,7 +24,7 @@ const SingupScreen = ({ newContact }) => {
       style={{
         height: "93vh",
         marginTop: "-48px",
-        backgroundImage: `url('../../public/bg.jpg')`,
+        backgroundImage: `url('/bg.jpg')`,
         backgroundSize: "100%",
       }}
     >

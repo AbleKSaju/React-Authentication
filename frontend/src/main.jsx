@@ -5,30 +5,13 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from "./store.js";
 import { Provider } from "react-redux";
-import {
-  BrowserRouter,
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from "react-router-dom";
-// import store from "./store.js";
-// import { Provider } from "react-redux";
-// import { HomeScreen } from "./screens/HomeScreen.jsx";
-// import LoginScreen from "./screens/LoginScreen.jsx";
-// import SingupScreen from "./screens/SingupScreen.jsx";
-// import ProfileScreen from "./screens/ProfileScreen.jsx";
-// import PrivateRoute from "./components/PrivateRoute.jsx";
-// import ImageUpload from "./components/ImageUpload.jsx";
-
+import { BrowserRouter } from "react-router-dom";
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Provider store={store }>
+  <Provider store={store}>
+    <React.StrictMode>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
-    {/* <RouterProvider router={router}> */}
-    {/* </RouterProvider> */}
-  </React.StrictMode>
+    </React.StrictMode>
+  </Provider>
 );

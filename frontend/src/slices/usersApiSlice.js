@@ -1,8 +1,9 @@
 import { apiSlice } from "./apiSlice";
 
-const USER_URL = '/api/users'
+const USER_URL = 'http://localhost:8000/api/users'
 
 export const userApiSlice = apiSlice.injectEndpoints({
+   
     endpoints:(builder)=>({
         login:builder.mutation({
             query:(data)=>({
