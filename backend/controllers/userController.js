@@ -3,13 +3,10 @@ import User from "../models/userModel.js";
 import generateToken from "../utils/generateTokens.js";
 
 const authUser = asyncHandler(async (req, res) => {
-      console.log(req.body, "auth body");
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  console.log(user,'userrrrr');
 
   if (user && await user.matchPassword(password)) {
-    console.log("Userrr");
     generateToken(res, user._id);
     res.status(201).json({
       _id: user._id,
@@ -18,7 +15,6 @@ const authUser = asyncHandler(async (req, res) => {
       profileImage: user.profileImage,
     });
   } else {
-    console.log("Elseee");
     res.status(400);
     throw new Error("Invalid email or password");
   }

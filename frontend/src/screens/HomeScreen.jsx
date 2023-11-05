@@ -14,10 +14,10 @@ const HomeScreen = () => {
                 Bootstrap library
               </p>
               <div className='d-flex'>
-                <Button variant='primary' href='/' className='me-3'>
+                <Button variant='primary'  className='me-3'>
                   Sign In
                 </Button>
-                <Button variant='secondary' href='/'>
+                <Button variant='secondary' >
                   Register
                 </Button>
               </div>

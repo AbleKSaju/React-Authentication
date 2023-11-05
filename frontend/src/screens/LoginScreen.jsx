@@ -20,17 +20,15 @@ const LoginScreen = () => {
     reset,
   } = useForm();
   const submit = async (data) => {
-    console.log(data,"dataaaa");
-    // reset();
+    reset();
     try {
-      console.log(email,password,'EP');
       const res = await login({ email, password }).unwrap()
       dispatch(setCredentials({ ...res }));
       toast.success("Login success");
       navigate("/");
     } catch (err) {
-      console.log("ENter");
-      console.log(err,"errr");
+      setEmail('')
+      setPassword('')
       toast.error(err?.data?.message || err.message);
     }
   };

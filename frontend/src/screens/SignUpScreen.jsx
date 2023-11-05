@@ -1,23 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-const SingupScreen = ({ newContact }) => {
+import { toast } from "react-toastify";
+import { useRegisterMutation } from "../slices/usersApiSlice";
+import { setCredentials } from "../slices/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+const SingupScreen = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmpassword, setconfirmPassword] = useState("");
-  console.log(name, email, password, "ep");
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+  const [signUp, { isLoading }] = useRegisterMutation();
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
   } = useForm();
-  const submit = (data) => {
+  const submit = async (data) => {
+    const { name, email, password, confirmpassword } = data;
+    if (password !== confirmpassword) {
+      toast.error("Password Not Match");
+    } else {
+      try {
+        const res = await signUp({ name, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        toast.success("Signup success");
+        navigate("/");
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
     reset();
-    navigate("/");
   };
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
   return (
     <div
       className="bgMountain"
@@ -32,7 +52,10 @@ const SingupScreen = ({ newContact }) => {
         className="container mt-5"
         style={{ height: "650px", width: "500px", border: "2px black" }}
       >
-        <div className="mt-3" style={{ textAlign: "center", paddingTop:'3rem' }}>
+        <div
+          className="mt-3"
+          style={{ textAlign: "center", paddingTop: "3rem" }}
+        >
           <h1 className="mt-2 mb-5">𝕊𝕚𝕘𝕟 𝕦𝕡</h1>
           <form onSubmit={handleSubmit(submit)}>
             <div className="mt-3">
@@ -47,19 +70,25 @@ const SingupScreen = ({ newContact }) => {
                 })}
                 placeholder=" Name..."
                 className="mt-0 border-0  rounded"
-                style={{ width: "75%", height: "40px" ,  background: "rgba(200, 200, 200, 0.5)"}}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                style={{
+                  width: "75%",
+                  height: "40px",
+                  background: "rgba(200, 200, 200, 0.5)",
+                }}
                 type="text"
               />
               <br />
-              {errors.email && (
-                <small className="text-danger">{errors.email.message}</small>
+              {errors.name && (
+                <small className="text-danger">{errors.name.message}</small>
               )}
               <br />
               <input
                 className="mt-2 border-0  rounded"
-                style={{ width: "75%", height: "40px" ,  background: "rgba(200, 200, 200, 0.5)"}}
+                style={{
+                  width: "75%",
+                  height: "40px",
+                  background: "rgba(200, 200, 200, 0.5)",
+                }}
                 {...register("email", {
                   required: "Email required",
                   pattern: {
@@ -70,10 +99,6 @@ const SingupScreen = ({ newContact }) => {
                 })}
                 placeholder="Email..."
                 type="text"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
               />
               <br />
               {errors.email && (
@@ -90,13 +115,13 @@ const SingupScreen = ({ newContact }) => {
                   },
                 })}
                 placeholder="Password..."
-                value={password}
                 className="mt-2 border-0  rounded"
-                style={{ width: "75%", height: "40px" ,  background: "rgba(200, 200, 200, 0.5)"}}
-                type="password"
-                onChange={(e) => {
-                  setPassword(e.target.value);
+                style={{
+                  width: "75%",
+                  height: "40px",
+                  background: "rgba(200, 200, 200, 0.5)",
                 }}
+                type="password"
               />
 
               <br />
@@ -105,7 +130,7 @@ const SingupScreen = ({ newContact }) => {
               )}
               <br />
               <input
-                {...register("confirm password", {
+                {...register("confirmpassword", {
                   required: "Password Required",
                   pattern: {
                     value: /^.{6,}$/,
@@ -113,13 +138,13 @@ const SingupScreen = ({ newContact }) => {
                   },
                 })}
                 placeholder="Password Confirm..."
-                value={confirmpassword}
                 className="mt-2 border-0  rounded"
-                style={{ width: "75%", height: "40px" ,  background: "rgba(200, 200, 200, 0.5)"}}
-                type="password"
-                onChange={(e) => {
-                  setconfirmPassword(e.target.value);
+                style={{
+                  width: "75%",
+                  height: "40px",
+                  background: "rgba(200, 200, 200, 0.5)",
                 }}
+                type="password"
               />
 
               <br />
@@ -133,7 +158,10 @@ const SingupScreen = ({ newContact }) => {
             <button
               type="submit"
               className="btn btn-outline-dark mt-3"
-              style={{ fontSize: "1rem" ,  background: "rgba(200, 200, 200, 0.5)"}}
+              style={{
+                fontSize: "1rem",
+                background: "rgba(200, 200, 200, 0.5)",
+              }}
             >
               Submit
             </button>

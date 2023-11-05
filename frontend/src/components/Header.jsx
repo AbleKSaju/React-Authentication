@@ -23,7 +23,7 @@ function CollapsibleExample() {
 
   }
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo,"inffff");
+  console.log(userInfo,"info");
 
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-dark">
@@ -31,7 +31,6 @@ function CollapsibleExample() {
         <Link to={"/"} style={{ textDecoration: "none" }}>
           <Navbar.Brand
             className="font-weight-bolder text-light text text-decoration-none"
-            href="#home"
           >
             Home
           </Navbar.Brand>
@@ -41,11 +40,12 @@ function CollapsibleExample() {
           <Nav className="me-auto"></Nav>
           {userInfo ? (
             <>
-              <NavDropdown className="text-light" title={userInfo.name} id="username">
-                <Link to={"/profile"}>
-                  <NavDropdown.Item className="text-light">Profile</NavDropdown.Item>
+              <NavDropdown className="text-light" title={userInfo?.name || userInfo?.user?.name} id="username">
+                <Link to={"/profile"}  style={{ textDecoration: "none" }} >
+                  <NavDropdown.Item className="text-dark" style={{ textDecoration: "none" }}>Profile</NavDropdown.Item>
                 </Link>
-                <NavDropdown.Item className="text-light" onClick={logoutHandler}>LogOut</NavDropdown.Item>
+                <hr />
+                <NavDropdown.Item className="text-dark" onClick={logoutHandler}>LogOut</NavDropdown.Item>
               </NavDropdown>
             </>
           ) : (
