@@ -4,10 +4,11 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+// import store from "../store";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/AuthSlice";
 
-function CollapsibleExample() {
+function AdminHeader() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
@@ -15,30 +16,29 @@ function CollapsibleExample() {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
-      navigate("/");
+      navigate("/adminLogin");
     } catch (error) {
       console.log(error, "eeee");
     }
   };
-  const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo, "info");
+  const { adminInfo } = useSelector((state) => state.auth);
 
   return (
-    <Navbar collapseOnSelect expand="lg" className="bg-dark">
+    <Navbar collapseOnSelect expand="lg" className="bg-dark pb-4">
       <Container>
-        <Link to={"/"} style={{ textDecoration: "none" }}>
+        <Link to={"/admin"} style={{ textDecoration: "none" }}>
           <Navbar.Brand className="font-weight-bolder text-light text text-decoration-none">
-            Home
+            Admin{" "}
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto"></Nav>
-          {userInfo ? (
+          {adminInfo && (
             <>
               <NavDropdown
                 className="text-light"
-                title={userInfo?.name || userInfo?.user?.name}
+                title={adminInfo?.name || adminInfo?.user?.name}
                 id="username"
               >
                 <NavDropdown.Item
@@ -46,7 +46,11 @@ function CollapsibleExample() {
                   style={{ textDecoration: "none" }}
                 >
                   {" "}
-                  <Link to={"/profile"} className="text-dark" style={{ textDecoration: "none" }}>
+                  <Link
+                    to={"/profile"}
+                    className="text-dark"
+                    style={{ textDecoration: "none" }}
+                  >
                     Profile{" "}
                   </Link>
                 </NavDropdown.Item>
@@ -56,33 +60,11 @@ function CollapsibleExample() {
                 </NavDropdown.Item>
               </NavDropdown>
             </>
-          ) : (
-            <>
-              <Nav>
-                <Link to={"/login"} style={{ textDecoration: "none" }}>
-                  <Nav.Link
-                    href="#deets"
-                    className="font-weight-normal text-light"
-                  >
-                    Sign In
-                  </Nav.Link>
-                </Link>
-                <Link to={"/signup"} style={{ textDecoration: "none" }}>
-                  <Nav.Link
-                    eventKey={2}
-                    href="#memes"
-                    className="font-weight-normal text-light text-decoration-none"
-                  >
-                    Sign Up
-                  </Nav.Link>
-                </Link>
-              </Nav>
-            </>
-          )}
+          ) }
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
 }
 
-export default CollapsibleExample;
+export default AdminHeader;

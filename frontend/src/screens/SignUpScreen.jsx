@@ -65,7 +65,7 @@ const SingupScreen = () => {
                   pattern: {
                     value:
                       /(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})/,
-                    message: "Full Name required",
+                    message: "Full name required",
                   },
                 })}
                 placeholder=" Name..."
