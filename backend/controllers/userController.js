@@ -21,7 +21,7 @@ const authUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('Invalid email or password');
   }
-});
+})
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -91,17 +91,20 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 const updateUserProfile = asyncHandler(async (req, res) => {
   console.log("Enter to Update");
+  console.log(req,"bodyyyy");
   const user = await User.findById(req.user._id);
+  console.log(user,'user');
 
   if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
+    user.name = req.query.name || user.name;
+    user.email = req.query.email || user.email;
 
-    if (req.body.password) {
+    if (req.query.password) {
       user.password = req.body.password;
     }
 
     const updatedUser = await user.save();
+    console.log(updatedUser,"usss");
 
     res.json({
       _id: updatedUser._id,

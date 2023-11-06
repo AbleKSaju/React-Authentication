@@ -11,8 +11,6 @@ const generateToken = (res , userid) =>{
         sameSite:'strict',
         maxAge:30 * 24 * 60 * 60 * 1000,
     })
-    console.log(res?.cookie,"coo");
-    console.log(res?.cookies,"coo");
 }
 
 export default generateToken
