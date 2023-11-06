@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import userRouter from './routes/userRouter.js'
+import adminRouter from './routes/adminRouter.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 dotenv.config()
@@ -17,6 +18,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/users',userRouter)
+app.use('/api/admin',adminRouter)
 app.get('/',(req,res)=>res.send('Server is Ready'))
 app.use(notFound)
 app.use(errorHandler)

@@ -2,10 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import './usersList.css'
 
-const AdminDash = ({setadmin}) => {
-    useEffect(()=>{
-        setadmin(true)
-    },[setadmin])
+const AdminDash = () => {
   return (
     <div className="container mt-2 mb-2 ">
     <div className="col-lg-9 mt-4 mt-lg-0">

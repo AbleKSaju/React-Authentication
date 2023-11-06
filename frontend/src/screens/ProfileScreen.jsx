@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useRegisterMutation } from "../slices/usersApiSlice";
 import { useUpdateUserMutation } from "../slices/usersApiSlice";
 
 import { setCredentials } from "../slices/AuthSlice";
