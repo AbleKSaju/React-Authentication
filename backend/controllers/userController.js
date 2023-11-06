@@ -5,6 +5,7 @@ import expressAsyncHandler from "express-async-handler";
 
 
 const authUser = asyncHandler(async (req, res) => {
+  console.log("Enter");
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -63,20 +64,9 @@ const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "User logged out" });
 });
 
-// const getUserProfile = asyncHandler(async (req, res) => {
-//   const user = {
-//     _id: req.user._id,
-//     name: req.user.name,
-//     email: req.user.email,
-//   };
-
-//   res.status(200).json({ user });
-// });
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  console.log(req.user._id,"userIdddd");
   const user = await User.findById(req.user._id);
-
   if (user) {
     res.json({
       _id: user._id,
@@ -90,21 +80,17 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-  console.log("Enter to Update");
-  console.log(req,"bodyyyy");
   const user = await User.findById(req.user._id);
-  console.log(user,'user');
 
   if (user) {
-    user.name = req.query.name || user.name;
-    user.email = req.query.email || user.email;
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
 
-    if (req.query.password) {
+    if (req.body.password) {
       user.password = req.body.password;
     }
 
     const updatedUser = await user.save();
-    console.log(updatedUser,"usss");
 
     res.json({
       _id: updatedUser._id,

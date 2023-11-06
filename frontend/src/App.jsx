@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import Header from "./components/Header.jsx";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import SingupScreen from "./screens/SignUpScreen";
@@ -14,12 +14,13 @@ import PrivateRoute from "./components/PrivateRoute";
 import AdminLogin from "./screens/AdminLogin";
 import AdminHeader from "./components/AdminHeader";
 import AdminDash from "./screens/AdminDash";
+import { Container } from "react-bootstrap";
 
 function App() {
-  const [admin,setAdmin]=useState(false)
+  // const [admin,setAdmin]=useState(false)
     return (
     <>
-    {!admin? <Header /> : <AdminHeader/> }
+    {/* {!admin? <Header /> : <AdminHeader/> }
      
       <ToastContainer />
       <Routes>
@@ -33,7 +34,12 @@ function App() {
       <Routes>
         <Route path="/adminLogin" element={<AdminLogin setadmin={setAdmin} />}></Route>
         <Route path="/adminDash" element={<AdminDash setadmin={setAdmin} />}></Route>
-      </Routes>
+      </Routes> */}
+        <>
+      <Header />
+      <ToastContainer />
+        <Outlet />
+    </>
     </>
   );
 }

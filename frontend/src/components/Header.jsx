@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/AuthSlice";
 
-function CollapsibleExample() {
+function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
@@ -47,7 +47,7 @@ function CollapsibleExample() {
                 >
                   {" "}
                   <Link to={"/profile"} className="text-dark" style={{ textDecoration: "none" }}>
-                    Profile{" "}
+                    Profile
                   </Link>
                 </NavDropdown.Item>
                 <hr />
@@ -85,4 +85,4 @@ function CollapsibleExample() {
   );
 }
 
-export default CollapsibleExample;
+export default Header;
