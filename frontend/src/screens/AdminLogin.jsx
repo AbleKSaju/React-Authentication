@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../slices/usersApiSlice";
+import { useAdminLoginMutation } from "../slices/adminApiSlice";
 import { setCredentials } from "../slices/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -12,7 +12,7 @@ const AdminLogin = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [login, { isLoading }] = useLoginMutation();
+  const [adminLogin, { isLoading }] = useAdminLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const {
     handleSubmit,
@@ -23,7 +23,9 @@ const AdminLogin = () => {
   const submit = async (data) => {
     reset();
     try {
-      const res = await login({ email, password }).unwrap();
+      console.log("Enter to Admin Login");
+      console.log(email,password,"oiii");
+      const res = await adminLogin({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       toast.success("Login success");
       navigate("/adminDash");

@@ -1,8 +1,11 @@
 import express from 'express'
+import { authAdmin,usersList } from '../controllers/adminController.js';
+ 
 const router = express.Router();
 
-router.get('/admin',(req,res)=>{
-    console.log("Adminneee");
-})
+router.post('/auth',authAdmin)
+
+router.get('/usersList',usersList)
+
 
 export default router;

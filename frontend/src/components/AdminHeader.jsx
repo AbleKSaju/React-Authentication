@@ -21,7 +21,7 @@ function AdminHeader() {
       console.log(error, "eeee");
     }
   };
-  const { adminInfo } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
 
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-dark pb-4">
@@ -34,14 +34,14 @@ function AdminHeader() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto"></Nav>
-          {adminInfo && (
+          {userInfo && (
             <>
               <NavDropdown
                 className="text-light"
-                title={adminInfo?.name || adminInfo?.user?.name}
+                title={userInfo?.name || userInfo?.user?.name}
                 id="username"
               >
-                <NavDropdown.Item
+                {/* <NavDropdown.Item
                   className="text-dark"
                   style={{ textDecoration: "none" }}
                 >
@@ -54,7 +54,7 @@ function AdminHeader() {
                     Profile{" "}
                   </Link>
                 </NavDropdown.Item>
-                <hr />
+                <hr /> */}
                 <NavDropdown.Item className="text-dark" onClick={logoutHandler}>
                   LogOut
                 </NavDropdown.Item>
