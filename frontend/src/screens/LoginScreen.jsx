@@ -34,7 +34,6 @@ const LoginScreen = () => {
   };
   useEffect(() => {
     if (userInfo) {
-      console.log("entttt");
       navigate("/");
     }
   }, [navigate, userInfo]);

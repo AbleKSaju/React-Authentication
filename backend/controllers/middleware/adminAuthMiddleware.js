@@ -8,9 +8,7 @@ const adminAuth = asyncHandler(async (req,res,next)=>{
     if(token){
         try {
            const decoded = jwt.verify(token,process.env.JWT_SECRET) 
-           console.log(decoded,"dee");
            const {userid} = decoded
-           console.log('decoded' , decoded);
             let admin =  await User.findOne({_id:userid,isAdmin:true})
             if(admin){
                 next()

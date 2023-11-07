@@ -26,7 +26,6 @@ const AdminDash = () => {
   },[])
 
   useEffect(() => {
-    console.log("refresh");
     const fetchData = async () => {
       try {
         const { data } = await users();
@@ -65,7 +64,6 @@ const AdminDash = () => {
   };
   const removeUser = async(id) => {
     try {
-      console.log("Enterto delete",id);
       await deleteUser({id}).unwrap();
       setUserDelete(!userDelete)
       toast.success("User deleted");
