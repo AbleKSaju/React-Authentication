@@ -7,16 +7,26 @@ import {
   useDeleteUserMutation,
   useGetUsersMutation,
 } from "../slices/adminApiSlice";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const AdminDash = () => {
+  const navigate=useNavigate()
   const [userData, setUserData] = useState([]);
   const [data, setData] = useState([]);
-  const dispatch=useDispatch()
   const [users, { isLoading }] = useGetUsersMutation();
   const [deleteUser, { isLoadings }] = useDeleteUserMutation();
+  const [userDelete,setUserDelete]=useState(false)
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(()=>{
+    if(!userInfo){
+      navigate('/adminLogin')
+    }
+  },[])
 
   useEffect(() => {
+    console.log("refresh");
     const fetchData = async () => {
       try {
         const { data } = await users();
@@ -24,9 +34,9 @@ const AdminDash = () => {
       } catch (error) {
         console.error(error);
       }
-    };
+    }
     fetchData();
-  }, [users]);
+  }, [users,userDelete]);
 
   useEffect(() => {
     setData(userData);
@@ -56,7 +66,8 @@ const AdminDash = () => {
   const removeUser = async(id) => {
     try {
       console.log("Enterto delete",id);
-      await deleteUser(id).unwrap();
+      await deleteUser({id}).unwrap();
+      setUserDelete(!userDelete)
       toast.success("User deleted");
     } catch (err) {
       console.log(err,'errorrr');
@@ -143,15 +154,15 @@ const AdminDash = () => {
                               </li>
 
                               <li>
-                                <a
-                                  href="#"
+                                <p
+                                  onClick={()=> editUser(val.cretedAt)}
                                   className="text-info ms-3"
                                   data-toggle="tooltip"
                                   title=""
                                   data-original-title="Edit"
                                 >
                                   <i className="fas fa-pencil-alt" />
-                                </a>
+                                </p>
                               </li>
                               <li>
                                 <p

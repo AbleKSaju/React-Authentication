@@ -20,6 +20,11 @@ const AdminLogin = () => {
     formState: { errors },
     reset,
   } = useForm();
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/adminDash");
+    }
+  }, [navigate, userInfo]);
   const submit = async (data) => {
     reset();
     try {

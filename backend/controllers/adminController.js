@@ -7,11 +7,10 @@ import expressAsyncHandler from "express-async-handler";
 
 
 const authAdmin = asyncHandler(async (req, res) => {
-    console.log("Enter to admin");
+  console.log("Enter");
     const { email, password } = req.body;
   
     const user = await User.findOne({ email });
-    console.log(user, "useree");
     if (user.isAdmin) {
       console.log("Enter to Admin");
       if (user && (await user.matchPassword(password))) {
@@ -44,8 +43,21 @@ const usersList= asyncHandler(async(req,res)=>{
 
 })
 
+const deleteUser=asyncHandler(async(req,res)=>{
+try {
+  console.log("Delete");
+  User.findOneAndDelete({createdAt:req.body.id}).lean().then((data)=>{
+    console.log(data);
+    res.status(200).json({data});
+  })
+} catch (err) {
+  throw new Error("User Not Found");
+}  
+})
+
 export {
   authAdmin,
-  usersList
+  usersList,
+  deleteUser
 
 };

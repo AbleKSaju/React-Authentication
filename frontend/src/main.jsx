@@ -21,6 +21,7 @@ import ProfileScreen from "./screens/ProfileScreen.jsx";
 import AdminLogin from "./screens/AdminLogin.jsx";
 import AdminHeader from "./components/AdminHeader.jsx";
 import AdminDash from "./screens/AdminDash.jsx";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,8 +34,8 @@ const router = createBrowserRouter(
           <Route path="/profile" element={<ProfileScreen />} />
         </Route>
       </Route>
-        <Route path="/adminLogin" element={<AdminLogin />}></Route>
-        <Route path="/adminDash" element={<AdminDash />}></Route>
+      <Route path="/adminLogin" element={<AdminLogin />}></Route>
+      <Route path="/adminDash" element={<AdminDash />}></Route>
     </>
   )
 );
@@ -42,6 +43,7 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <React.StrictMode>
+      <ToastContainer />
       <RouterProvider router={router} />
     </React.StrictMode>
   </Provider>

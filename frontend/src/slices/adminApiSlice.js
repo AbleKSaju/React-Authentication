@@ -24,9 +24,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deleteUser: builder.mutation({
-      query: () =>({
+      query: (data) =>({
         url: `${USERS_URL}/deleteUser`,
         method: "POST",
+        body: data,
       })
     })
   }),
