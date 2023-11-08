@@ -5,7 +5,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 // import store from "../store";
-import { useLogoutMutation } from "../slices/usersApiSlice";
+import { useLogoutMutation } from "../slices/adminApiSlice";
 import { logout } from "../slices/AuthSlice";
 
 function AdminHeader() {
@@ -18,10 +18,10 @@ function AdminHeader() {
       dispatch(logout());
       navigate("/adminLogin");
     } catch (error) {
-      console.log(error, "eeee");
+      console.log(error);
     }
   };
-  const { userInfo } = useSelector((state) => state.auth);
+  const { adminInfo } = useSelector((state) => state.auth);
 
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-dark pb-4">
@@ -34,11 +34,11 @@ function AdminHeader() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto"></Nav>
-          {userInfo && (
+          {adminInfo && (
             <>
               <NavDropdown
                 className="text-light"
-                title={userInfo?.name || userInfo?.user?.name}
+                title={adminInfo?.name || adminInfo?.user?.name}
                 id="username"
               >
                 {/* <NavDropdown.Item

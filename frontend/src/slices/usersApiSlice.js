@@ -31,7 +31,14 @@ const USERS_URL = '/api/users'
               body: data,
             }),
           }),
+          updateProfile: builder.mutation({
+            query:(data)=>({
+              url: `${USERS_URL}/updateProfile`,
+              method:'POST',
+              body:data
+            })
+          }),
         }),
       });
 
-export const { useLoginMutation,useLogoutMutation,useRegisterMutation,useUpdateUserMutation } = userApiSlice;
+export const { useLoginMutation,useLogoutMutation,useRegisterMutation,useUpdateUserMutation,useUpdateProfileMutation } = userApiSlice;

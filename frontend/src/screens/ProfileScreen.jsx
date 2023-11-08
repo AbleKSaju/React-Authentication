@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useUpdateUserMutation } from "../slices/usersApiSlice";
-import { useUpdateProfileMutation } from "../slices/adminApiSlice";
+import { useUpdateUserMutation,useUpdateProfileMutation } from "../slices/usersApiSlice";
+// import { useUpdateProfileMutation } from "../slices/adminApiSlice";
 // import '../../../backend/public/images/'
 import { setCredentials } from "../slices/AuthSlice";
 
@@ -20,16 +20,19 @@ const ProfileScreen = () => {
   const [updateProfile, { isLoad }] = useUpdateProfileMutation();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [profile, setProfile] = useState("");
   const [userProfile, setUserProfile] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  console.log(userInfo,'user');
 
   useEffect(() => {}, [userProfile]);
   useEffect(() => {
     setName(userInfo.name);
     setEmail(userInfo.email);
+    setProfile(userInfo.profileImage);
   }, [userInfo.email, userInfo.name]);
-
   const {
     handleSubmit,
     register,
@@ -48,6 +51,7 @@ const ProfileScreen = () => {
           email,
           password,
         }).unwrap();
+        console.log(res);
         dispatch(setCredentials({ ...res }));
         toast.success("Update success");
         navigate("/");
@@ -63,10 +67,10 @@ const ProfileScreen = () => {
   };
 
   const handleFileChange = async (e) => {
+    console.log(e.target.files[0],"FILE");
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
     formData.append("id", userInfo._id);
-    console.log(formData, "form");
     try {
       const res = await updateProfile(formData).unwrap();
       console.log(res, "ressswwww");

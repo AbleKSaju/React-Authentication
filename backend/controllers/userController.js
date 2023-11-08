@@ -15,6 +15,7 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      profileImage:user.profileImage
     });
   } else {
     res.status(401);
@@ -96,6 +97,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
+        profileImage: user.profileImage,
       });
     } else {
       res.status(404);

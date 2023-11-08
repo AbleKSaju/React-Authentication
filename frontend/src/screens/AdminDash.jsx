@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import { useEffect } from "react";
 import "./usersList.css";
 import AdminHeader from "../components/AdminHeader";
@@ -6,24 +6,30 @@ import { toast } from "react-toastify";
 import {
   useDeleteUserMutation,
   useGetUsersMutation,
+  useEditUserMutation
 } from "../slices/adminApiSlice";
-import { useSelector } from "react-redux";
+import {userDetails} from '../slices/AuthSlice'
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const AdminDash = () => {
+  const context=createContext(null)
   const navigate=useNavigate()
+  const dispatch=useDispatch()
   const [userData, setUserData] = useState([]);
   const [data, setData] = useState([]);
   const [users, { isLoading }] = useGetUsersMutation();
   const [deleteUser, { isLoadings }] = useDeleteUserMutation();
+  const [editUserData, { isLoad }] = useEditUserMutation();
   const [userDelete,setUserDelete]=useState(false)
-  const { userInfo } = useSelector((state) => state.auth);
+  const { adminInfo } = useSelector((state) => state.auth);
+  console.log(adminInfo,"admin");
 
   useEffect(()=>{
-    if(!userInfo){
+    if(!adminInfo || adminInfo?.email!=='admin@gmail.com'){
       navigate('/adminLogin')
     }
-  },[])
+  },[adminInfo])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,6 +79,11 @@ const AdminDash = () => {
     }
   };
 
+  const editUser=(user)=>{
+      dispatch(userDetails(user))
+      navigate('/editUser')
+  }
+
   return (
     <div className="mb-5 ">
       {<AdminHeader />}
@@ -110,11 +121,20 @@ const AdminDash = () => {
                         <tr className="candidates-list">
                           <td className="title">
                             <div className="thumb">
-                              <img
+                              {val.profileImage?(
+                                      <img
                                 className="img-fluid"
-                                src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                                src={`http://localhost:8000/images/${val.profileImage}`}
                                 alt=""
                               />
+                              ):(
+                                <img
+                                className="img-fluid"
+                                src={`https://static.vecteezy.com/system/resources/previews/016/293/983/non_2x/profile-avatar-ui-element-template-user-account-editable-isolated-dashboard-component-flat-user-interface-visual-data-presentation-web-design-widget-for-mobile-application-with-dark-theme-vector.jpg`}
+                                alt=""
+                              />
+                              )}
+                        
                             </div>
                             <div className="candidate-list-details">
                               <div className="candidate-list-info">
@@ -142,18 +162,10 @@ const AdminDash = () => {
                           </td>
                           <td>
                             <ul className="list-unstyled mb-0 d-flex justify-content-end">
-                              <li>
-                                <a
-                                  className="candidate-list-favourite order-2 text-danger"
-                                  href="#"
-                                >
-                                  <i className="fas fa-heart" />
-                                </a>
-                              </li>
 
                               <li>
                                 <p
-                                  onClick={()=> editUser(val.cretedAt)}
+                                  onClick={()=> editUser(val)}
                                   className="text-info ms-3"
                                   data-toggle="tooltip"
                                   title=""

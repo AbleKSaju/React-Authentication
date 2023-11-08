@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAdminLoginMutation } from "../slices/adminApiSlice";
-import { setCredentials } from "../slices/AuthSlice";
+import { setCredentials,setAdminCredentials } from "../slices/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AdminHeader from "../components/AdminHeader";
@@ -13,7 +13,7 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [adminLogin, { isLoading }] = useAdminLoginMutation();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { adminInfo } = useSelector((state) => state.auth);
   const {
     handleSubmit,
     register,
@@ -21,16 +21,16 @@ const AdminLogin = () => {
     reset,
   } = useForm();
   useEffect(() => {
-    if (userInfo) {
+    if (adminInfo && adminInfo.email=='admin@gmail.com') {
       navigate("/adminDash");
     }
-  }, [navigate, userInfo]);
+  }, [navigate, adminInfo]);
   const submit = async (data) => {
     reset();
     try {
       const res = await adminLogin({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      toast.success("Login success");
+      console.log(res,"admin res");
+      dispatch(setAdminCredentials({ ...res }));
       navigate("/adminDash");
     } catch (err) {
       setEmail("");

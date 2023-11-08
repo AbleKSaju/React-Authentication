@@ -7,11 +7,11 @@ import expressAsyncHandler from "express-async-handler";
 
 
 const authAdmin = asyncHandler(async (req, res) => {
-  console.log("Enter");
     const { email, password } = req.body;
   
     const user = await User.findOne({ email });
-    if (user.isAdmin) {
+    console.log(user,"user");
+    if (user.isAdmin=='true') {
       console.log("Enter to Admin");
       if (user && (await user.matchPassword(password))) {
         generateToken(res, user._id);
@@ -26,10 +26,10 @@ const authAdmin = asyncHandler(async (req, res) => {
         throw new Error("Invalid email or password");
       }
     } else {
-      res.status(401);
+      res.status(400)
       throw new Error("You are Not Admin");
     }
-  });
+  })
   
 const usersList= asyncHandler(async(req,res)=>{
     try{
@@ -55,9 +55,19 @@ try {
 }  
 })
 
+const logoutUser = asyncHandler(async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+
+  res.status(200).json({ message: "User logged out" });
+});
+
 export {
   authAdmin,
   usersList,
-  deleteUser
+  deleteUser,
+  logoutUser
 
 };

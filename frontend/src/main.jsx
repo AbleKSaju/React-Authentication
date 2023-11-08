@@ -22,6 +22,7 @@ import AdminLogin from "./screens/AdminLogin.jsx";
 import AdminHeader from "./components/AdminHeader.jsx";
 import AdminDash from "./screens/AdminDash.jsx";
 import { ToastContainer } from "react-toastify";
+import EditUser from "./screens/EditUser.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/adminLogin" element={<AdminLogin />}></Route>
       <Route path="/adminDash" element={<AdminDash />}></Route>
+      <Route path="/editUser" element={<EditUser />}></Route>
     </>
   )
 );
