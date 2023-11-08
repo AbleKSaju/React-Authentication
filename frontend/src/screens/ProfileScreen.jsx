@@ -9,6 +9,7 @@ import { useUpdateUserMutation,useUpdateProfileMutation } from "../slices/usersA
 import { setCredentials } from "../slices/AuthSlice";
 
 import "./profile.css";
+import { useLogoutMutation } from "../slices/usersApiSlice";
 
 const ProfileScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -25,8 +26,12 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  console.log(userInfo,'user');
-
+useEffect(()=>{
+  console.log(userInfo,"USERINFO");
+  if(!userInfo){
+    logoutHandler()
+  }
+},[userInfo])
   useEffect(() => {}, [userProfile]);
   useEffect(() => {
     setName(userInfo.name);
@@ -39,6 +44,18 @@ const ProfileScreen = () => {
     formState: { errors },
     reset,
   } = useForm();
+
+  const [logoutApiCall] = useLogoutMutation();
+  const logoutHandler = async () => {
+    try {
+      console.log("ENTER TO LOGOUT");
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate("/");
+    } catch (error) {
+      console.log(error, "eeee");
+    }
+  };
 
   const submit = async (data) => {
     if (password !== confirmPassword) {
@@ -57,6 +74,7 @@ const ProfileScreen = () => {
         navigate("/");
       } catch (err) {
         toast.error(err?.data?.message || err.error);
+        navigate('/login')
       }
     }
     reset();
@@ -67,13 +85,11 @@ const ProfileScreen = () => {
   };
 
   const handleFileChange = async (e) => {
-    console.log(e.target.files[0],"FILE");
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
     formData.append("id", userInfo._id);
     try {
       const res = await updateProfile(formData).unwrap();
-      console.log(res, "ressswwww");
       dispatch(setCredentials({ ...res }));
       setUserProfile(!userProfile);
     } catch (err) {

@@ -54,6 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
+  console.log("ENter To Logout");
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
@@ -63,6 +64,8 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
+  console.log("ENTER TO GET USER PROFILE");
+  console.log(req.user,"USER");
   const user = await User.findById(req.user._id);
   if (user) {
     res.json({
@@ -77,8 +80,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 const updateUserProfile = asyncHandler(async (req, res) => {
+  console.log("ENTER TO UPDATE USER");
   const {  email } = req.body;
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.body._id);
   console.log(user,"userrr");
   const alreadyExist = await User.find({
     $and: [{ _id: { $ne: user._id } }, { $or: [ { email }] }],
@@ -108,6 +112,20 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User Exist");
   }
 });
+const updateProfile=asyncHandler(async(req, res) => {
+  console.log(req.file,"file")
+  await User.findByIdAndUpdate(req.body.id, { profileImage: req.file.filename }).then(
+    (data) => {
+      console.log(data, "dataaa");
+      res.status(200).json({
+        _id: data._id,
+        name: data.name,
+        email: data.email,
+        profileImage: req.file.filename,
+      });
+    }
+  )
+})
 
 export {
   authUser,
@@ -115,4 +133,5 @@ export {
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  updateProfile
 };

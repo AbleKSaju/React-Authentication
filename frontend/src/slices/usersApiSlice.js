@@ -13,7 +13,7 @@ const USERS_URL = '/api/users'
           }),
           logout: builder.mutation({
             query: () => ({
-              url: `${USERS_URL}/logout`,
+              url: `${USERS_URL}/logoutUser`,
               method: 'POST',
             }),
           }),

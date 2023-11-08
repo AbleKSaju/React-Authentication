@@ -6,42 +6,47 @@ import { toast } from "react-toastify";
 import {
   useDeleteUserMutation,
   useGetUsersMutation,
-  useEditUserMutation
+  useEditUserMutation,
 } from "../slices/adminApiSlice";
-import {userDetails} from '../slices/AuthSlice'
+import { setCredentials, userDetails } from "../slices/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useLogoutMutation } from "../slices/usersApiSlice";
+import { logoutUser } from "../slices/AuthSlice";
 
 const AdminDash = () => {
-  const context=createContext(null)
-  const navigate=useNavigate()
-  const dispatch=useDispatch()
+  const context = createContext(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [userData, setUserData] = useState([]);
   const [data, setData] = useState([]);
   const [users, { isLoading }] = useGetUsersMutation();
   const [deleteUser, { isLoadings }] = useDeleteUserMutation();
   const [editUserData, { isLoad }] = useEditUserMutation();
-  const [userDelete,setUserDelete]=useState(false)
+  const [userDelete, setUserDelete] = useState(false);
   const { adminInfo } = useSelector((state) => state.auth);
-  console.log(adminInfo,"admin");
+  const { userInfo } = useSelector((state) => state.auth);
+  const [logoutApiCall] = useLogoutMutation();
 
-  useEffect(()=>{
-    if(!adminInfo || adminInfo?.email!=='admin@gmail.com'){
-      navigate('/adminLogin')
+  useEffect(() => {
+    if (!adminInfo || adminInfo?.email !== "admin@gmail.com") {
+      navigate("/adminLogin");
     }
-  },[adminInfo])
+  }, [adminInfo]);
+  console.log("userDeleted");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        "Enter to fetch"
         const { data } = await users();
         setUserData(data.data);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
     fetchData();
-  }, [users,userDelete]);
+  }, [users,userDelete,adminInfo,logoutApiCall]);
 
   useEffect(() => {
     setData(userData);
@@ -68,21 +73,24 @@ const AdminDash = () => {
     const formattedDate = date.toLocaleDateString(undefined, options);
     return formattedDate;
   };
-  const removeUser = async(id) => {
-    try {
-      await deleteUser({id}).unwrap();
-      setUserDelete(!userDelete)
-      toast.success("User deleted");
-    } catch (err) {
-      console.log(err,'errorrr');
-      toast.error(err?.data?.message || err.message);
-    }
+  const removeUser = async (id, userId) => {
+    console.log(userId, "params");
+    console.log(userInfo?._id, "user");
+
+      try {
+        await deleteUser({ id }).unwrap();
+        setUserDelete(!userDelete);
+        toast.success("User deleted");
+      } catch (err) {
+        console.log(err, "errorrr");
+        toast.error(err?.data?.message || err.message);
+      }
   };
 
-  const editUser=(user)=>{
-      dispatch(userDetails(user))
-      navigate('/editUser')
-  }
+  const editUser = (user) => {
+    dispatch(userDetails(user));
+    navigate("/editUser");
+  };
 
   return (
     <div className="mb-5 ">
@@ -121,20 +129,19 @@ const AdminDash = () => {
                         <tr className="candidates-list">
                           <td className="title">
                             <div className="thumb">
-                              {val.profileImage?(
-                                      <img
-                                className="img-fluid"
-                                src={`http://localhost:8000/images/${val.profileImage}`}
-                                alt=""
-                              />
-                              ):(
+                              {val.profileImage ? (
                                 <img
-                                className="img-fluid"
-                                src={`https://static.vecteezy.com/system/resources/previews/016/293/983/non_2x/profile-avatar-ui-element-template-user-account-editable-isolated-dashboard-component-flat-user-interface-visual-data-presentation-web-design-widget-for-mobile-application-with-dark-theme-vector.jpg`}
-                                alt=""
-                              />
+                                  className="img-fluid"
+                                  src={`http://localhost:8000/images/${val.profileImage}`}
+                                  alt=""
+                                />
+                              ) : (
+                                <img
+                                  className="img-fluid"
+                                  src={`https://static.vecteezy.com/system/resources/previews/016/293/983/non_2x/profile-avatar-ui-element-template-user-account-editable-isolated-dashboard-component-flat-user-interface-visual-data-presentation-web-design-widget-for-mobile-application-with-dark-theme-vector.jpg`}
+                                  alt=""
+                                />
                               )}
-                        
                             </div>
                             <div className="candidate-list-details">
                               <div className="candidate-list-info">
@@ -162,10 +169,9 @@ const AdminDash = () => {
                           </td>
                           <td>
                             <ul className="list-unstyled mb-0 d-flex justify-content-end">
-
                               <li>
                                 <p
-                                  onClick={()=> editUser(val)}
+                                  onClick={() => editUser(val)}
                                   className="text-info ms-3"
                                   data-toggle="tooltip"
                                   title=""
@@ -176,7 +182,9 @@ const AdminDash = () => {
                               </li>
                               <li>
                                 <p
-                                  onClick={() => removeUser(val.createdAt)}
+                                  onClick={() =>
+                                    removeUser(val.createdAt, val._id)
+                                  }
                                   className="text-danger ms-3"
                                   data-toggle="tooltip"
                                   title=""

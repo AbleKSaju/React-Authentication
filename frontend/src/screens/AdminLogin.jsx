@@ -21,6 +21,7 @@ const AdminLogin = () => {
     reset,
   } = useForm();
   useEffect(() => {
+    console.log(adminInfo,"ADMIN info");
     if (adminInfo && adminInfo.email=='admin@gmail.com') {
       navigate("/adminDash");
     }

@@ -55,6 +55,23 @@ try {
 }  
 })
 
+const editUser= asyncHandler(async(req, res) => {
+  console.log("Enter");
+  console.log(req.body,'body');
+User.findByIdAndUpdate(req.body._id, {
+  name: req.body.name,
+  email: req.body.email,
+}).lean().then((data)=>{
+console.log(data,"newData");
+res.status(200).json({
+  _id: data._id,
+  name:data.name,
+  email:data.email,
+  profileImage: data.profileImage
+})
+})
+})
+
 const logoutUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
@@ -68,6 +85,7 @@ export {
   authAdmin,
   usersList,
   deleteUser,
+  editUser,
   logoutUser
 
 };
