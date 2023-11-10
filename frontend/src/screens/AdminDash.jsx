@@ -28,6 +28,7 @@ const AdminDash = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [logoutApiCall] = useLogoutMutation();
 
+  console.log(adminInfo,"ADMIN");
   useEffect(() => {
     if (!adminInfo || adminInfo?.email !== "admin@gmail.com") {
       navigate("/adminLogin");
@@ -40,6 +41,9 @@ const AdminDash = () => {
       try {
         "Enter to fetch"
         const { data } = await users();
+        if(!data){
+          navigate("/adminLogin");
+        }
         setUserData(data.data);
       } catch (error) {
         console.error(error);
@@ -74,9 +78,6 @@ const AdminDash = () => {
     return formattedDate;
   };
   const removeUser = async (id, userId) => {
-    console.log(userId, "params");
-    console.log(userInfo?._id, "user");
-
       try {
         await deleteUser({ id }).unwrap();
         setUserDelete(!userDelete);

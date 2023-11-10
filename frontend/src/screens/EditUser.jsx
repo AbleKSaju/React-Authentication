@@ -16,6 +16,7 @@ const EditUser = () => {
   const [name, setName] = useState(userForEdit.name);
   const [email, setEmail] = useState(userForEdit.email);
   const {adminInfo}=useSelector((state)=>state.auth)
+  const [update,setUpdate]=useState(false)
 
   useEffect(()=>{
     if(!userForEdit.name){
@@ -26,7 +27,7 @@ const EditUser = () => {
         navigate('/adminLogin')
     }
   },[adminInfo,userForEdit])
-
+  useEffect(()=>{},[update])
   const {
     handleSubmit,
     register,
@@ -41,8 +42,8 @@ const EditUser = () => {
         email: data.email,
       }).unwrap();
       dispatch(setCredentials({ ...res }));
-      console.log("Yeah");
       toast.success("Update success");
+      setUpdate(!update)
       navigate("/adminDash");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
