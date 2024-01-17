@@ -4,9 +4,11 @@ import generateToken from "../utils/generateTokens.js";
 import expressAsyncHandler from "express-async-handler";
 
 const authUser = asyncHandler(async (req, res) => {
+  console.log("ENtttt");
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
+  console.log(user,'USERSSS');
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);

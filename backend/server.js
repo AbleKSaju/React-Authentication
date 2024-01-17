@@ -1,15 +1,16 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
+import connectDB from './config/db.js'
 import userRouter from './routes/userRouter.js'
 import adminRouter from './routes/adminRouter.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 dotenv.config()
 import { errorHandler,notFound } from './controllers/middleware/errorMiddleware.js'
-import connectDB from './config/db.js'
-const port = process.env.PORT || 8000;
 connectDB()
+const port = process.env.PORT || 8000;
+
 const app=express()
 app.use(cookieParser())
 // app.use(cors())
